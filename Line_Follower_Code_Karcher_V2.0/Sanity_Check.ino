@@ -25,8 +25,8 @@ void sanityCheck() {
   
   if (RobotFault != 0) {
     Serial.println(" ====== Robot Haulted, Error detected ====== ");
-    Motor1->setSpeed(0);
-    Motor2->setSpeed(0);
+    runMotorAtSpeed(LEFT, 0);
+    runMotorAtSpeed(RIGHT, 0);
     unsigned long prevTime = 0;
     int ledState = 0;
     while (1) {

@@ -1,14 +1,7 @@
 /* ************************************************************************************************* */
 // UCSD ECE 5 Lab 4 Code: Line Following Robot with PID 
-// V 1.1
-// Last Modified 5/11/2022 by MingWei Yeoh
-//
-// Todo : 
-// > Add support for individually adressable LEDs
-// > Be able to change the amount of photoresistors that you have (not locked into 7 photoresistors)
-//
-// ----- ChangeLog -----
-// V 1.1 - Flipped the Black and White calibration order. 
+// V 2.0
+// Last Modified 8/12/2022 by MingWei Yeoh
 /* ************************************************************************************************* */
 
 /*
@@ -48,40 +41,40 @@
 // Include files needed
 #include <Wire.h>
 #include <EEPROM.h>
-#include <Adafruit_MotorShield.h>
+#include <L298NX2.h>
 
 // ************************************************************************************************* //
 // ****** DECLARE PINS HERE  ****** 
 
 // Taken from LEFT TO RIGHT of the robot ****** Orient yourself so that you are looking from the rear of the robot (photoresistors are farthest away from you, wheels are closest to you)
 
-#define LEFTMOTORPIN        4
-#define RIGHTMOTORPIN       3
+//                  Left Motors   Right motors 
+L298NX2 DriveMotors(  2, 3, 4,      7, 5, 6);
+//                 ENA, IN1, IN2, ENB, IN3, IN4
 
-int LDR_Pin[] = {A14, A13, A12, A11, A10, A9, A8}; // SET PINS CONNECTED TO PHOTORESISTORS // FROM LEFT TO RIGHT OF THE ROBOT, ROBOT IS ORIENTED WHERE PHOTORESISOTRS FARTHEST FROM YOU AND WHEELS ARE CLOSEST TO YOU      
+enum side {LEFT, RIGHT};
+
+int LDR_Pin[] = {A9, A10, A11, A12, A13, A14, A15}; // SET PINS CONNECTED TO PHOTORESISTORS // FROM LEFT TO RIGHT OF THE ROBOT, ROBOT IS ORIENTED WHERE PHOTORESISOTRS FARTHEST FROM YOU AND WHEELS ARE CLOSEST TO YOU      
 
 // Potentiometer Pins
-const int S_pin = A0; // Pin connected to Speed potentiometer
-const int P_pin = A1; // Pin connected to P term potentiometer
-const int I_pin = A2; // Pin connected to I term potentiometer
-const int D_pin = A3; // Pin connected to D term potentiometer
+const int S_pin = A3; // Pin connected to Speed potentiometer
+const int P_pin = A2; // Pin connected to P term potentiometer
+const int I_pin = A1; // Pin connected to I term potentiometer
+const int D_pin = A0; // Pin connected to D term potentiometer
                                                                  
-int led_Pins[] = {2, 3, 4, 5, 6, 7, 8, 13};  // LEDs to indicate what part of calibration you're on and to illuminate the photoresistors
+int led_Pins[] = {41,43,45,47,49,51,53};  // LEDs to indicate what part of calibration you're on and to illuminate the photoresistors
 
 // ************************************************************************************************* //
 // Change Robot Settings here
 
-#define CALIBRATEEVERYTIME  0  // Set to 0 to take advantage of the built in memory (Turn on robot and dont move it, it will read values from memory). You can still calibrate at any time to store new values.
+#define CALIBRATEEVERYTIME  1  // Set to 0 to take advantage of the built in memory (Turn on robot and dont move it, it will read values from memory). You can still calibrate at any time to store new values.
 #define DETECTFALLOFFBOARD  1  // Detects robot falling off the board and immediately stops all motors
 #define PRINTALLDATA        0  // Prints ALL the data, Could be useful for debugging =)
 #define NOMINALSPEED        30 // This is the base speed for both motors, can also be increased by using potentiometers
-#define RGBLEDSTRIP         1  // You can use an RGB strip for extra flair!! You will need to install FastLED. Tools-> Manage Libraries -> search "FastLED"->  Install
+#define RGBLEDSTRIP         0  // You can use an RGB strip for extra flair!! You will need to install FastLED. Tools-> Manage Libraries -> search "FastLED"->  Install
 
 // ************************************************************************************************* //
 // Variable declarations
-Adafruit_MotorShield AFMS = Adafruit_MotorShield();
-Adafruit_DCMotor *Motor1 = AFMS.getMotor(RIGHTMOTORPIN);
-Adafruit_DCMotor *Motor2 = AFMS.getMotor(LEFTMOTORPIN);
 
 //Variables for PID Calculations
 int MxRead, MxIndex, CriteriaForMax;
@@ -111,18 +104,14 @@ float kP, kI, kD;
 int rogueRobotCount = 0;
 
 #ifdef RGBLEDSTRIP
-#include "LEDAnimations.h"
+  #include <FastLED.h>
+  #include "LEDAnimations.h"
 #endif
 
 // ************************************************************************************************* //
 // setup - runs once
 void setup() {
   Serial.begin(9600);                            // For serial communication set up
-  
-  if (!AFMS.begin()) {                           // Create Adafruit Motor Shield, Raise error if unable to start it
-    Serial.println("Could not find Motor Shield. Check wiring.");
-    while (1);
-  }
 
   for (int i = 0; i < numLEDs; i++)
     pinMode(led_Pins[i], OUTPUT);                // Initialize all LEDs to output

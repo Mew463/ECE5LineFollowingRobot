@@ -1,7 +1,5 @@
-#include <FastLED.h>
-
-#define LED_PIN     12
-#define NUM_LEDS    15
+#define LED_PIN     52
+#define NUM_LEDS    7
 #define BRIGHTNESS  100
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
@@ -59,6 +57,6 @@ void LEDStripInit() {
 
 void updateLEDStrip() {
   fill_palette(ledstrip, NUM_LEDS, hue, 255 / NUM_LEDS, currentpal, 255, LINEARBLEND);
-  EVERY_N_MILLISECONDS(1) hue += 3;
+  EVERY_N_MILLISECONDS(10) hue += 1;
   FastLED.show();
 }

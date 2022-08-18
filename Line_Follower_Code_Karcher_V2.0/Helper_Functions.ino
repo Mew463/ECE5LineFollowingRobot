@@ -23,37 +23,38 @@ int ReadPotentiometerHelper(int pin, int min_resolution, int max_resolution, int
 // function to start motors using nominal speed + speed addition from potentiometer
 void RunMotors() {
   setLeds(1);
+
   M1SpeedtoMotor = min(NOMINALSPEED + SpRead + M1P, 255); // limits speed to 255
   M2SpeedtoMotor = min(NOMINALSPEED + SpRead + M2P, 255); // remember M1Sp & M2Sp is defined at beginning of code (default 60)
-
-  runMotorAtSpeed(Motor2, M1SpeedtoMotor, FORWARD); // run motor 1
-  runMotorAtSpeed(Motor1, M2SpeedtoMotor, FORWARD); // run motor 2
+  
+  runMotorAtSpeed(LEFT, M2SpeedtoMotor); // run right motor 
+  runMotorAtSpeed(RIGHT, M1SpeedtoMotor); // run left motor
+  
 } // end RunMotors()
 
 // A function that commands a specified motor to move towards a given direction at a given speed
-void runMotorAtSpeed(Adafruit_DCMotor *motor, int speed, int direction) {
-  motor->setSpeed(abs(speed));  // sets the speed of the motor from arguments
-
-  if (speed < 0) {              // swap direction if speed is negative
-    if (direction == FORWARD) {
-      motor->run(BACKWARD);     // sets the direction of the motor from arguments
-    }
-    else if (direction == BACKWARD) {
-      motor->run(FORWARD);      // sets the direction of the motor from arguments
-    }
+void runMotorAtSpeed(side _side, int speed) {
+  if (_side == LEFT) {
+    DriveMotors.setSpeedA(abs(speed));
+    if (speed > 0)                // swap direction if speed is negative
+      DriveMotors.forwardA();           // sets the direction of the motor from arguments
+    else
+      DriveMotors.backwardA();          // sets the direction of the motor from arguments
   }
-  else {
-    motor->run(direction);      // sets the direction of the motor from arguments
+  if (_side == RIGHT) {
+    DriveMotors.setSpeedB(abs(speed));
+    if (speed > 0)                // swap direction if speed is negative
+      DriveMotors.forwardB();           // sets the direction of the motor from arguments
+    else
+      DriveMotors.backwardB();          // sets the direction of the motor from arguments
   }
 }
 
 // ************************************************************************************************* //
 // Function to read photo resistors and map from 0 to 100
 void ReadPhotoResistors() {
-  for (int Li = 0; Li < totalPhotoResistors; Li++) {
+  for (int Li = 0; Li < totalPhotoResistors; Li++) 
     LDR[Li] = map(analogRead(LDR_Pin[Li]), Mn[Li], Mx[Li], 0, 100);
-    delay(2);
-  }
 
   for (int i = 0; i < totalPhotoResistors; i++)
     rawPResistorData[i] = analogRead(LDR_Pin[i]);
@@ -118,12 +119,12 @@ void PID_Turn() {
     sumerror = 0;
 
   if (Turn < 0) {
-    M1P = Turn;       // One motor becomes slower and the other faster
-    M2P = -Turn;
+    M1P = -Turn;       // One motor becomes slower and the other faster
+    M2P = Turn;
   }
   else if (Turn > 0) {
-    M1P = Turn ;
-    M2P = -Turn;
+    M1P = -Turn;
+    M2P = Turn;
   }
   else {
     M1P = 0;
@@ -164,14 +165,16 @@ int determineRogueRobot() {
 
 void haltMotors() {
   static int ledState = 0;
+
+  runMotorAtSpeed(LEFT, 0);
+  runMotorAtSpeed(RIGHT, 0);
+  
   static unsigned long prevTime;
   if (millis() - prevTime > 150) {
         ledState = !ledState;
         setLeds(ledState);
         Serial.println("Robot is off the board!");
         prevTime = millis();
-        Motor1->setSpeed(0);
-        Motor2->setSpeed(0);
   }
 }
 
