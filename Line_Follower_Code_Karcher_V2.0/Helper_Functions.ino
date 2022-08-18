@@ -150,15 +150,9 @@ int determineRogueRobot() {
     rogueRobotCount = 0;
 
   if (rogueRobotCount > 5){               // Check 5 more times just to be sure
-    #ifdef RGBLEDSTRIP
-        currentpal = Off_Board_Animation;
-    #endif
     return 1;
   }
   else {
-    #ifdef RGBLEDSTRIP
-        currentpal = LineTracking_Animation;
-    #endif
     return 0;
   }
 }

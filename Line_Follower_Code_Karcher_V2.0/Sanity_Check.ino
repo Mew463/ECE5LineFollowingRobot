@@ -36,11 +36,6 @@ void sanityCheck() {
         prevTime = millis();
       }
       
-      #ifdef RGBLEDSTRIP
-        currentpal = Error_Animation;
-        updateLEDStrip();
-        delay(7);
-      #endif
     }
   }
   else

@@ -103,11 +103,6 @@ float error, lasterror = 0, sumerror = 0;
 float kP, kI, kD;
 int rogueRobotCount = 0;
 
-#ifdef RGBLEDSTRIP
-  #include <FastLED.h>
-  #include "LEDAnimations.h"
-#endif
-
 // ************************************************************************************************* //
 // setup - runs once
 void setup() {
@@ -118,10 +113,6 @@ void setup() {
  
   for (int i = 0; i < totalPhotoResistors; i++)
     pinMode(LDR_Pin[i], INPUT_PULLUP);           // Initialize all Photoresistors to INPUT_PULLUP
-
-  #ifdef RGBLEDSTRIP
-    LEDStripInit();
-  #endif
   
   Calibrate();                                   // Calibrate black and white sensing
 
@@ -150,9 +141,5 @@ void loop() {
   
   if (PRINTALLDATA)     // If PRINTALLDATA Enabled, Print all the data
     Print();         
-
-  #ifdef RGBLEDSTRIP
-    updateLEDStrip();
-  #endif
   
 } // end loop()
