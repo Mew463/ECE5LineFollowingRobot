@@ -54,7 +54,7 @@ L298NX2 DriveMotors(  2, 3, 4,      7, 5, 6);
 
 enum side {LEFT, RIGHT};
 
-int LDR_Pin[] = {A9, A10, A11, A12, A13, A14, A15}; // SET PINS CONNECTED TO PHOTORESISTORS // FROM LEFT TO RIGHT OF THE ROBOT, ROBOT IS ORIENTED WHERE PHOTORESISOTRS FARTHEST FROM YOU AND WHEELS ARE CLOSEST TO YOU      
+int LDR_Pin[] = {A8, A9, A10, A11, A12, A13, A14}; // SET PINS CONNECTED TO PHOTORESISTORS // FROM LEFT TO RIGHT OF THE ROBOT, ROBOT IS ORIENTED WHERE PHOTORESISOTRS FARTHEST FROM YOU AND WHEELS ARE CLOSEST TO YOU      
 
 // Potentiometer Pins
 const int S_pin = A3; // Pin connected to Speed potentiometer
@@ -71,7 +71,6 @@ int led_Pins[] = {41,43,45,47,49,51,53};  // LEDs to indicate what part of calib
 #define DETECTFALLOFFBOARD  1  // Detects robot falling off the board and immediately stops all motors
 #define PRINTALLDATA        0  // Prints ALL the data, Could be useful for debugging =)
 #define NOMINALSPEED        30 // This is the base speed for both motors, can also be increased by using potentiometers
-#define RGBLEDSTRIP         0  // You can use an RGB strip for extra flair!! You will need to install FastLED. Tools-> Manage Libraries -> search "FastLED"->  Install
 
 // ************************************************************************************************* //
 // Variable declarations
