@@ -27,7 +27,7 @@ void loop() {
 void ReadPhotoResistors() {
   // looping through analog pins A8 to A14 and storing their values into our LDR array
   for (int i = 0; i < totalPhotoResistors; i++) {
-    LDR[i] = ? /** FIX ME: which function to put here to read analog pins? (hint: refer to 10.1 code) **/
+    LDR[i] = ? /** FIX ME: which function to put here to read analog pins? **/
     delay(2);
   }
 }
