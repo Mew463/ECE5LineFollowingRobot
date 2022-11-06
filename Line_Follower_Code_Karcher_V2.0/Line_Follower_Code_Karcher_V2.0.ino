@@ -67,10 +67,10 @@ int led_Pins[] = {41,43,45,47,49,51,53};  // LEDs to indicate what part of calib
 // ************************************************************************************************* //
 // Change Robot Settings here
 
-#define CALIBRATEEVERYTIME  1  // Set to 0 to take advantage of the built in memory (Turn on robot and dont move it, it will read values from memory). You can still calibrate at any time to store new values.
+#define CALIBRATEEVERYTIME  0  // Set to 0 to take advantage of the built in memory (Turn on robot and dont move it, it will read values from memory). You can still calibrate at any time to store new values.
 #define DETECTFALLOFFBOARD  1  // Detects robot falling off the board and immediately stops all motors
 #define PRINTALLDATA        0  // Prints ALL the data, Could be useful for debugging =)
-#define NOMINALSPEED        60 // This is the base speed for both motors, can also be increased by using potentiometers
+#define NOMINALSPEED        30 // This is the base speed for both motors, can also be increased by using potentiometers
 
 // ************************************************************************************************* //
 // Variable declarations
