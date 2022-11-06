@@ -42,6 +42,12 @@
 #include <Wire.h>
 #include <EEPROM.h>
 #include <L298NX2.h>
+#include <FastLED.h>
+#include "LEDAnimations.h"
+#include <IBusBM.h>
+
+IBusBM IBus; 
+
 
 // ************************************************************************************************* //
 // ****** DECLARE PINS HERE  ****** 
@@ -106,12 +112,28 @@ int rogueRobotCount = 0;
 // setup - runs once
 void setup() {
   Serial.begin(9600);                            // For serial communication set up
+  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+  FastLED.setBrightness(  BRIGHTNESS );
+
+  IBus.begin(Serial1);  // iBUS connected to pin 19
 
   for (int i = 0; i < numLEDs; i++)
     pinMode(led_Pins[i], OUTPUT);                // Initialize all LEDs to output
  
   for (int i = 0; i < totalPhotoResistors; i++)
     pinMode(LDR_Pin[i], INPUT_PULLUP);           // Initialize all Photoresistors to INPUT_PULLUP
+
+  fill_rainbow(leds, NUM_LEDS, 0, 3);
+  FastLED.show();
+  delay(1000);
+  static uint8_t starthue = 0;
+  for (int x = 0; x < 500; x++) {
+    fill_rainbow( leds, NUM_LEDS, ++starthue, 4);
+    FastLED.show();
+  }
+
+  fill_solid(leds, NUM_LEDS, CRGB ::Green);
+  FastLED.show();
   
   Calibrate();                                   // Calibrate black and white sensing
 
@@ -140,5 +162,9 @@ void loop() {
   
   if (PRINTALLDATA)     // If PRINTALLDATA Enabled, Print all the data
     Print();         
+
+  fill_palette(leds, NUM_LEDS, hue, 255 / NUM_LEDS, currentpal, 255, LINEARBLEND);
+  EVERY_N_MILLISECONDS(10) hue++;
+  FastLED.show();
   
 } // end loop()

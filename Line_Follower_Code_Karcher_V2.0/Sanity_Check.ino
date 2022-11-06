@@ -33,6 +33,11 @@ void sanityCheck() {
       if (millis() - prevTime > 500) {
         ledState = !ledState;
         setLeds(ledState);
+        if (ledState)
+          fill_solid(leds, NUM_LEDS, CRGB ::Red);
+        else
+          fill_solid(leds, NUM_LEDS, CRGB ::Black);
+        FastLED.show();
         prevTime = millis();
       }
       
