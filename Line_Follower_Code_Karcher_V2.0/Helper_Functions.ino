@@ -150,9 +150,11 @@ int determineRogueRobot() {
     rogueRobotCount = 0;
 
   if (rogueRobotCount > 5){               // Check 5 more times just to be sure
+    currentpal = Fall_Off_Board;
     return 1;
   }
   else {
+    currentpal = Sunset_Real_gp;
     return 0;
   }
 }
