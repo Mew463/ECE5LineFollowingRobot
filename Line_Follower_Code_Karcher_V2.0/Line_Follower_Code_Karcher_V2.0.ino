@@ -156,9 +156,15 @@ void loop() {
   PID_Turn();           // PID Control and Output to motors to turn
 
   if (DETECTFALLOFFBOARD && determineRogueRobot())
-    haltMotors();       // Only if DETECTFALLOFFBOARD is enabled AND Robot is off the track will we halt the motors.
+    if (IBus.readChannel(9) != 2000)
+      haltMotors();       // Only if DETECTFALLOFFBOARD is enabled AND Robot is off the track will we halt the motors.
+    else
+      remoteControl();
   else
-    RunMotors();        // Runs motors
+    if (IBus.readChannel(9) == 1000 || IBus.readChannel(9) == 0)
+      RunMotors();        // Runs motors
+    else
+      remoteControl();
   
   if (PRINTALLDATA)     // If PRINTALLDATA Enabled, Print all the data
     Print();         
