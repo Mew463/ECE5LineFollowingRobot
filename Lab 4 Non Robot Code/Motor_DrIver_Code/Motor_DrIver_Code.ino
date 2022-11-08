@@ -11,7 +11,7 @@ enum side {LEFT, RIGHT};
 // Create in stance of motors
 
 //                  Left Motors   Right motors 
-L298NX2 DriveMotors(  2, 3, 4,      7, 5, 6);
+L298NX2 DriveMotors(  2, 3, 4,      7, 5, 6); // Digital Pins on Arduino
 //                 ENA, IN1, IN2, ENB, IN3, IN4
 
 //Set Initial Speed of Motors

@@ -16,18 +16,23 @@ void setup() { /* Setup - runs once (when power is supplied or after reset) */
 
 void loop() { /* Loop - loops forever (until unpowered or reset) */
 
-  // Call on user-defined function to read Potentiometer values
-  Sp = /* FIX ME, replace this comment with actual function name */ ReadPotentiometer(S_pin, 0, 1023, 0, 100);
-  kP = /* FIX ME, replace this comment with actual function name */ ReadPotentiometer(P_pin, 0, 1023, 0, 100);
-  kI = /* FIX ME, replace this comment with actual function name */ ReadPotentiometer(I_pin, 0, 1023, 0, 100);
-  kD = /* FIX ME, replace this comment with actual function name */ ReadPotentiometer(D_pin, 0, 1023, 0, 100);
+  ReadPotentiometers();
 
   Print(); // Call on user-defined function to print values from potentiometers
 }
 
 // ************************************************************************************************* //
 // function to read and map values from potentiometers
-int ReadPotentiometer(int pin, int min_resolution, int max_resolution, int min_potentiometer, int max_potentiometer) {
+
+void ReadPotentiometers() {
+  // Call on user-defined function to read Potentiometer values
+  Sp = ReadPotentiometerHelper(S_pin, 0, 1023, 0, 100);
+  kP = ReadPotentiometerHelper(P_pin, 0, 1023, 0, 100);
+  kI = ReadPotentiometerHelper(I_pin, 0, 1023, 0, 100);
+  kD = ReadPotentiometerHelper(D_pin, 0, 1023, 0, 100); 
+
+}
+int ReadPotentiometerHelper(int pin, int min_resolution, int max_resolution, int min_potentiometer, int max_potentiometer) {
   return map(analogRead(pin), min_resolution, max_resolution, min_potentiometer, max_potentiometer);
 }
 

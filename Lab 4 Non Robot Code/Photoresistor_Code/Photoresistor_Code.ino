@@ -12,7 +12,7 @@ void setup() {
   Serial.begin(9600); // For serial communication set up
 
   for (int i = 0; i < totalPhotoResistors; i++) 
-    pinMode(LDR_Pin[i], INPUT_PULLUP);
+    pinMode(LDR_Pin[i],  );
 
 }
 
