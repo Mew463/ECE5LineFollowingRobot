@@ -6,11 +6,10 @@
 
 /*
    This is code for your PID controlled line following robot.
-   The code is divided into different tabs to better divide the code.
 
    ******      Code Table of Contents      ******
 
-  - Line_Follower_Code_Karcher
+  - Line_Follower_Code_Basic
    > Declare libraries     - declares global variables so each variable can be accessed from every function
    > Declare Pins          - where the user sets what pin everything is connected to 
    > Settings              - settings that can improve robot functionality and help to debug
@@ -27,7 +26,6 @@
    > Run Motors            - runs motors
    > Calculate Error       - calculate error from photoresistor readings
    > PID Turn              - takes the error and implements PID control
-   > determineRogueRobot() - checks each photoresistor. If all of them are reading a dark color we know the robot is off the track
    > Print                 - used for printing information but should disable when not debugging because it slows down program
 
 */
@@ -105,7 +103,7 @@ void setup() {
   Calibrate();                                   // Calibrate black and white sensing
 
   ReadPotentiometers();                          // Read potentiometer values (Sp, P, I, & D)
-  
+
 } // end setup()
 
 // ************************************************************************************************* //
