@@ -24,8 +24,8 @@ int ReadPotentiometerHelper(int pin, int min_resolution, int max_resolution, int
 void RunMotors() {
   setLeds(1);
 
-  M1SpeedtoMotor = min(NOMINALSPEED + SpRead + M1P, 255); // limits speed to 255
-  M2SpeedtoMotor = min(NOMINALSPEED + SpRead + M2P, 255); // remember M1Sp & M2Sp is defined at beginning of code (default 60)
+  M1SpeedtoMotor = min(NOMINALSPEED + SpRead + M1P, 255);     // limits speed to 255
+  M2SpeedtoMotor = min(NOMINALSPEED + SpRead + M2P, 255); // remember NOMINALSPEED is defined at beginning of code (default 30)
   
   runMotorAtSpeed(LEFT, M2SpeedtoMotor); // run right motor 
   runMotorAtSpeed(RIGHT, M1SpeedtoMotor); // run left motor
